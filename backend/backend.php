@@ -49,10 +49,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["messageerr"] = $messageerr;
 
         
-        header("Location: ui.php"); 
+        header("Location: /views/ui.php"); 
         exit(); 
     }
 
-    
+    $jsonFile = __DIR__ . "/../data/submit_data.json";
+    $jsonNewData = [
+        "first_name" => $fname,
+        "last_name" => $lname,
+        "email" => $email,
+        "telephone" => $telephone,
+        "message"=> $message
+    ];
+    if (file_exists($jsonFile)) {
+        $jsonContent = file_get_contents($jsonFile);
+        $dataArray = json_decode($jsonContent, true);
+        $dataArray[] = $jsonNewData; 
+    } else {
+        $dataArray = [$jsonNewData];
+    }
+
+    $newJsonContent = json_encode($dataArray, JSON_PRETTY_PRINT);
+    file_put_contents($jsonFile, $newJsonContent);
+    header("Location: /views/ui.php"); 
 }
 ?>
