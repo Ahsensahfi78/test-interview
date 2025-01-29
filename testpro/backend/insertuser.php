@@ -32,6 +32,7 @@ if (empty($_POST['address'])) {
 if (!empty($errors)) {
     foreach ($errors as $error) {
         echo $error . "<br>";
+        header("location:../view/index.html",200);
     }
 } else {
 
@@ -49,6 +50,7 @@ if (!empty($errors)) {
     }else{
         if (mysqli_query($con, "INSERT INTO `userdetails`(`fname`, `lname`, `email`, `phonenumber`, `address`) VALUES ('$fname','$lname','$email','$phonenumber','$address')")) {
             echo "SUCESSFULLY INSERTED";
+            header("location:../view/dashboard.php",200);
     
         }
     }
