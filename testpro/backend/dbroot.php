@@ -1,10 +1,14 @@
 <?php
 
-$con = mysqli_connect("localhost","root","");
+require '../model/dbclass.php';
 
-if($con->connect_errno){
-    echo "database not connect" - $con->connect_error;
-}
+$con = new DB();
+
+$link = $con->connect();
+
+// if($con->connect_errno){
+//     echo "database not connect" - $con->connect_error;
+// }
 
 $sql = "CREATE DATABASE IF NOT EXISTS userdata";
 
@@ -17,17 +21,17 @@ $sql2 = "CREATE TABLE if not exists userdetails(
   address varchar(255));";
 
 
-mysqli_select_db($con,'userdata');
+mysqli_select_db($link,'userdata');
 
-if($con->query($sql2)=== true){
+if($link->query($sql2)=== true){
   
-  if($con->query($sql2)=== true){
+  if($link->query($sql2)=== true){
     echo "table succesfully created";
   }else{
-    echo "Error:". $con->error;
+    echo "Error:". $link->error;
   }
 }else{
-    echo "Error: " . $con->error;
+    echo "Error: " . $link->error;
 
 }
 
