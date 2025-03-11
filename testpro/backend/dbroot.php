@@ -26,7 +26,7 @@ mysqli_select_db($link,'userdata');
 if($link->query($sql2)=== true){
   
   if($link->query($sql2)=== true){
-    echo "table succesfully created";
+   // echo "table succesfully created";
   }else{
     echo "Error:". $link->error;
   }

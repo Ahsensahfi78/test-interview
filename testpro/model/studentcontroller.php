@@ -25,6 +25,24 @@ class studentcontroller extends DB{
             return false;
         }
     }
+
+    public function createforatt($inputdata2){
+        //$checkbox1 = $inputdata2['checkbox1'];
+        $checkbox2 = $inputdata2['checkbox2'];
+        $fname = $inputdata2['firstname'];
+        $email = $inputdata2['email'];
+
+        $attnquer = $this->connect()->prepare("INSERT INTO `attandancetab`(`firstname`,`email`,`attand`)values(?,?,?)");
+        $attnquer->bind_param("sss",$fname,$email,$checkbox2);
+        $attnquer->execute();
+        $attnquer->store_result();
+
+        if($attnquer){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 
 
