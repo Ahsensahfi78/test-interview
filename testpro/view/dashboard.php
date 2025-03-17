@@ -74,15 +74,34 @@ $res = $link->query($sql);
             <div class="col-6 col-md-4 col-xl-3" style="margin-left: 150px; margin-top: -850px;">
                 <div class="card bg-info order-card">
                     <div class="card-body">
-                        <h6 class="m-b-20">Students</h6>
-                        <h2 class="text-right"><i class="fa fa-person f-left"></i><span>15</span></h2>
-                        <p class="m-b-0">Present<span class="f-right"></span></p>
-                        <h2 class="text-right"><i class="fa fa-person ml-2"><span>5</span></i></h2>
+                        <h6 class="m-b-20">Monthly Achivement</h6>
+                        <?php
+                        $res123 = "SELECT SUM(amount) as `sumamount`FROM transaction";
+                        $monthtarget = 100000;
+                        $percentage = "SELECT SUM(amount) / $monthtarget as `percent` FROM transaction";
+                        $result1 = $link->query($res123);
+                        $checkper = $link->query($percentage);
+                        while ($row = mysqli_fetch_assoc($result1)) { ?>
+                            <h2 class="text-right"><i
+                                    class="fas fa-chart-pie f-left"></i><span><?php echo $row['sumamount']; ?></span></h2>
+                        <?php } ?>
+                        <!-- <p class="m-b-0">Achievment<span class="f-right"></span></p> -->
+                        <?php
+                        $per = mysqli_fetch_assoc($checkper);
+                        if ($per) {
+                            $per_val = round($per['percent'], 2);
+                        }
+                        ?>
+                        <p>Monthky Target<span class="f-right"></span></p>
+                        <h5 class="text-right"><i class="fas fa-chart-line"><span
+                                    style="margin-left:5px;"><?php echo '100000' . '' . '<br>' . $per_val . '%'; ?></span></i>
+                        </h5>
+
                     </div>
                 </div>
             </div>
 
-            <div class="col-6 col-md-4 col-xl-3" style="margin-top: -850px;">
+            <!-- <div class="col-6 col-md-4 col-xl-3" style="margin-top: -850px;">
                 <div class="card bg-warning order-card">
                     <div class="card-body">
                         <h6 class="m-b-20">Students Assignment Received</h6>
@@ -91,61 +110,14 @@ $res = $link->query($sql);
                         <h2 class="text-right"><i class="fa fa-check"><span>5</span></i></h2>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="col-6 col-md-4 col-xl-3 position-relative" style="margin-top: -850px">
-                <div class="card bg-danger order-card">
-                    <div class="card-body">
-                        <h6 class="m-b-20">Staff Absent Count</h6>
-                        <h2 class="text-right"><i class="fa fa-person f-left"></i><span style="margin-left:5px;"><?php $absent = mysqli_num_rows($res);
-                        echo $absent ?></span>
-                        </h2>
-                        <p class="m-b-0">Staffs Name<span class="f-right"></span></p>
-                        <?php while ($absent1 = mysqli_fetch_assoc($res)) {
-                            ?>
-                            <h2 class="text-right"><i class="fas fa-id-card">
-                                    <h5><span style="margin-left:5px;"><?php echo $absent1['firstname']; ?></span></h5>
-                                </i></h2>
-                            <?php
-                        } ?>
-                    </div>
-                </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
 
 
     <div class="row">
-        <div class="col-6 col-md-4 col-xl-2" style="margin-left: 1080px; margin-top:-850px;">
-            <div class="card bg-success order-card">
-                <div class="card-body">
-                    <h6 class="m-b-20">Monthly Achivement</h6>
-                    <?php
-                    $res123 = "SELECT SUM(amount) as `sumamount`FROM transaction";
-                    $monthtarget = 100000;
-                    $percentage = "SELECT SUM(amount) / $monthtarget as `percent` FROM transaction";
-                    $result1 = $link->query($res123);
-                    $checkper = $link->query($percentage);
-                    while($row = mysqli_fetch_assoc($result1)){?>
-                    <h2 class="text-right"><i class="fas fa-chart-pie f-left"></i><span><?php echo $row['sumamount'];?></span></h2>
-                    <?php }?>
-                    <!-- <p class="m-b-0">Achievment<span class="f-right"></span></p> -->
-                    <?php
-                    $per = mysqli_fetch_assoc($checkper);
-                     if($per){
-                        $per_val = round($per['percent'],2);
-                     }
-                    ?>
-                    <p>Monthky Target<span class="f-right"></span></p>
-                    <h5 class="text-right"><i class="fas fa-chart-line"><span style="margin-left:5px;"><?php echo '100000'.''.'<br>' .$per_val. '%';?></span></i></h5>
-                    
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex col-6 col-md-1" style="margin-left: 1080px; margin-top:-650px; height: 100px;">
+        <div class="d-flex col-6 col-md-1" style="margin-left: 500px; margin-top:-750px; height: 100px;">
             <button id="addtransaction" class="btn btn-primary"><i class="fa fa-cc-visa"> Add Transaction</i></button>
         </div>
     </div>
@@ -173,6 +145,16 @@ $res = $link->query($sql);
                     <label for="amount">Amount</label>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <input type="text" name="student_name" class="form-control" placeholder="Student Name">
+                    <label for="studentname">Student Name</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="date" name="date" class="form-control" placeholder="Date">
+                    <lable for="date">Date</lable>
+                </div>
+
                 <div class="d-flex">
                     <button id="add" type="submit" class="btn btn-success">Add</button>
                 </div>
@@ -185,39 +167,10 @@ $res = $link->query($sql);
         </div>
     </div>
 
-    <div class="" style="width:1000px; margin-left: 250px; margin-top:-500px;">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th class="col">ID</th>
-                    <th class="col">Transaction Method</th>
-                    <th class="col">Description</th>
-                    <th class="col">Amount</th>
-                    <th class="col">Edit</th>
-                    <th class="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $res12 = "SELECT * from transaction";
-                $res1 = $link->query($res12);
-                while ($row1 = mysqli_fetch_assoc($res1)) {
-                    ?>
-                    <tr>
-                        <td><?php echo $row1['id']; ?></td>
-                        <td><?php echo $row1['transaction_method']; ?></td>
-                        <td><?php echo $row1['description']; ?></td>
-                        <td><?php echo $row1['amount']; ?></td>
-                        <td><a href="#" class="btn btn-primary">Edit</a></td>
-                        <td><a href="#" class="btn btn-danger">Delete</a></td>
-                    </tr>
-                    <?php
-                }
-                ?>
-            </tbody>
-        </table>
+    <div style="width:80%; max-width:400px; height:400px margin:auto; margin-left:550px; margin-top:-500px; ">
+        <canvas id="chart">
+        </canvas>
     </div>
-
 
 
     <!-- <div class="d-flex justify-content-center" id="assignment" style="margin-top: -500px;">
@@ -254,7 +207,8 @@ $res = $link->query($sql);
     </div> -->
 
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script type="text/javascript" src="jscript/graph.js"></script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -272,5 +226,51 @@ $res = $link->query($sql);
     });
 </script>
 
-</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const divline = document.getElementById('chart');
 
+        fetch("../backend/fetch.php")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                createChart(data, 'line');
+            })
+            .catch(error => {
+                console.error("There was a problem with the fetch operation", error);
+            });
+
+        function createChart(chartData, type) {
+            new Chart(divline, {
+                type: type,
+                data: {
+                    labels: chartData.map(row => row.student_name),
+                    datasets: [{
+                        label: '#income',
+                        data: chartData.map(row => row.amount),
+                        borderWidth: 1,
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.2)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+
+</html>

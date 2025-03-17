@@ -50,6 +50,25 @@
             </div>
         </div>
     </div>
+
+    <div class="col-6 col-md-4 col-xl-3 position-relative" style="margin-top: -850px">
+        <div class="card bg-danger order-card">
+            <div class="card-body">
+                <h6 class="m-b-20">Staff Absent Count</h6>
+                <h2 class="text-right"><i class="fa fa-person f-left"></i><span style="margin-left:5px;"><?php $absent = mysqli_num_rows($res);
+                echo $absent ?></span>
+                </h2>
+                <p class="m-b-0">Staffs Name<span class="f-right"></span></p>
+                <?php while ($absent1 = mysqli_fetch_assoc($res)) {
+                    ?>
+                    <h2 class="text-right"><i class="fas fa-id-card">
+                            <h5><span style="margin-left:5px;"><?php echo $absent1['firstname']; ?></span></h5>
+                        </i></h2>
+                    <?php
+                } ?>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

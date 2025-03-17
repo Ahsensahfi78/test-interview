@@ -52,6 +52,41 @@
             </div>
         </div>
     </div>
+
+    
+    <div class="" style="width:1000px; margin-left: 250px; margin-top:-500px;">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col">ID</th>
+                    <th class="col">Transaction Method</th>
+                    <th class="col">Description</th>
+                    <th class="col">Amount</th>
+                    <th class="col">Edit</th>
+                    <th class="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $res12 = "SELECT * from transaction";
+                $res1 = $link->query($res12);
+                while ($row1 = mysqli_fetch_assoc($res1)) {
+                    ?>
+                    <tr>
+                        <td><?php echo $row1['id']; ?></td>
+                        <td><?php echo $row1['transaction_method']; ?></td>
+                        <td><?php echo $row1['description']; ?></td>
+                        <td><?php echo $row1['amount']; ?></td>
+                        <td><a href="#" class="btn btn-primary">Edit</a></td>
+                        <td><a href="#" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+
 </body>
 
 </html>
