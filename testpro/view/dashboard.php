@@ -61,6 +61,13 @@ $res = $link->query($sql);
                                     <span class="fs-4 ms-1 d-none d-sm-inline">Courses</span>
                                 </a>
                             </li>
+
+                            <li class="nav-item mb-3">
+                                <a class="nav-link text-white" href="courses.html">
+                                    <i class="fs-5 fa-solid fas fa-person"></i>
+                                    <span class="fs-4 ms-1 d-none d-sm-inline">Students</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -78,25 +85,25 @@ $res = $link->query($sql);
                         <?php
                         $res123 = "SELECT SUM(amount) as `sumamount`FROM transaction";
                         $monthtarget = 100000;
-                        $percentage = "SELECT SUM(amount) / $monthtarget as `percent` FROM transaction";
+                        //$percentage = intval(($res123 / 100000));
                         $result1 = $link->query($res123);
-                        $checkper = $link->query($percentage);
-                        while ($row = mysqli_fetch_assoc($result1)) { ?>
-                            <h2 class="text-right"><i
-                                    class="fas fa-chart-pie f-left"></i><span><?php echo $row['sumamount']; ?></span></h2>
-                        <?php } ?>
-                        <!-- <p class="m-b-0">Achievment<span class="f-right"></span></p> -->
-                        <?php
-                        $per = mysqli_fetch_assoc($checkper);
-                        if ($per) {
-                            $per_val = round($per['percent'], 2);
+                        // $checkper = $link->query($percentage);
+
+                        if($row = mysqli_fetch_assoc($result1)){
+                            $sumamount = $row['sumamount'];
+                            $percentage = ($monthtarget > 0) ? ($sumamount/$monthtarget) * 100 : 0 ;
                         }
                         ?>
-                        <p>Monthky Target<span class="f-right"></span></p>
+                            <h2 class="text-right"><i
+                                    class="fas fa-chart-pie f-left"></i><span><?php echo $row['sumamount']; ?></span></h2>
+                        
+                        <!-- <p class="m-b-0">Achievment<span class="f-right"></span></p> -->
+                       
+                        <p>Monthly Target<span class="f-right"></span></p>
                         <h5 class="text-right"><i class="fas fa-chart-line"><span
-                                    style="margin-left:5px;"><?php echo '100000' . '' . '<br>' . $per_val . '%'; ?></span></i>
+                                    style="margin-left:5px;"><?php echo number_format($monthtarget) . '' . '<br>' . $per_val = round($percentage, 2) . '%'; ?></span></i>
                         </h5>
-
+                        
                     </div>
                 </div>
             </div>
@@ -167,9 +174,43 @@ $res = $link->query($sql);
         </div>
     </div>
 
-    <div style="width:80%; max-width:400px; height:400px margin:auto; margin-left:550px; margin-top:-500px; ">
+    <div style="width:80%; max-width:400px; height:400px margin:auto; margin-left:750px; margin-top:-800px; ">
         <canvas id="chart">
         </canvas>
+    </div>
+
+
+    <div class="" style="width:1000px; margin-left: 250px; margin-top:80px;">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="col">ID</th>
+                    <th class="col">Transaction Method</th>
+                    <th class="col">Description</th>
+                    <th class="col">Amount</th>
+                    <th class="col">Edit</th>
+                    <th class="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $res12 = "SELECT * from transaction";
+                $res1 = $link->query($res12);
+                while ($row1 = mysqli_fetch_assoc($res1)) {
+                    ?>
+                    <tr>
+                        <td><?php echo $row1['id']; ?></td>
+                        <td><?php echo $row1['transaction_method']; ?></td>
+                        <td><?php echo $row1['description']; ?></td>
+                        <td><?php echo $row1['amount']; ?></td>
+                        <td><a href="#" class="btn btn-primary">Edit</a></td>
+                        <td><a href="#" class="btn btn-danger">Delete</a></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 
 
@@ -249,7 +290,7 @@ $res = $link->query($sql);
             new Chart(divline, {
                 type: type,
                 data: {
-                    labels: chartData.map(row => row.student_name),
+                    labels: chartData.map(row => row.date),
                     datasets: [{
                         label: '#income',
                         data: chartData.map(row => row.amount),

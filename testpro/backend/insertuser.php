@@ -2,20 +2,30 @@
 include_once("dbroot.php");
 require "../model/studentcontroller.php";
 
+
 if($_SERVER['REQUEST_METHOD']=='POST'){
     $inputdata = [
-        'firstname' => mysqli_real_escape_string($link,$_POST["firstname"]),
-        'lastname' => mysqli_real_escape_string($link,$_POST["lastname"]),
-        'email' => mysqli_real_escape_string($link,$_POST["email"]),
-        'phonenumber' => mysqli_real_escape_string($link,$_POST["phonenumber"]),
-        'address' => mysqli_real_escape_string($link,$_POST["address"])
+        'username' => mysqli_real_escape_string($link,$_POST["username"]),
+        'password' => mysqli_real_escape_string($link,$_POST["password"]),
+       
     ];
 
     $studentcon = new studentcontroller;
     $result = $studentcon->create($inputdata);
+    $check = $studentcon->checkuser(); 
 
     if($result){
-        echo "succesfully inserted student details";
+        try{
+            if($check){
+                echo "succesfully Logined";
+                header("location:../view/dashboard.php");
+                throw new Exception("something error in '$check'");
+            }
+       
+        }catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }
+   
     }else{
         echo $link->error;
     }
